@@ -1,8 +1,9 @@
 <?php
 
+use App\Models\Listing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Models\Listing;
+use App\Http\Controllers\ListingController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +14,14 @@ use App\Models\Listing;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+// Common Resource Routes:
+// index - show all listings
+// show - show a single listing
+// create - show form to create new Listing
+// store - store new listing
+// edit - show form to edit listing
+// 
 
 Route::get('/', function () {
     return view('welcome');
@@ -34,18 +43,8 @@ Route::get('/search', function(Request $request) {
 });
 
 //All listings
-Route::get('/', function() {
-  return view('listings', [
-    'heading' => 'Latest Listings',
-    'listings' => Listing::all()
-  ]); //now data is coming from our model
-});
+Route::get('/', [ListingController::class, 'index']);
 
 //Single listing
 
-Route::get('/listings/{listing}', function(Listing $listing) {
-
-  return view('listing', [
-    'listing' => $listing
-  ]);
-});
+Route::get('/listings/{listing}', [ListingController::class, 'show']);
